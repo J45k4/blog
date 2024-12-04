@@ -83,3 +83,8 @@ Businesses that rely on some "unique" human characteristics are going to be in d
 What if your business is about productizing existing AI models from leading model developers then when their models improve your product also gets better. This seems nice but there is likely to be a lot of competition and hard to gain a competitive advantage in this.
 
 Selling hardware which is still valuable even when most of the work is done by AI. So if you sell GPUs your business value will increase if interest in AI increases. Even better would be to develop new products which benefit AI. But the thing is that if it is already so general it can do most jobs then almost anything you produce can be used by robots. So it seems the future of the business is hardware.
+
+
+## Conclusions
+
+The best way to stay relevant on the age of AI is to focus on doing things where humans are still better and try to use tools like chatgpt as much as it improves your cababilities. Always choose tool which does the job best wether it is your own mind your hands or some AI tool.
