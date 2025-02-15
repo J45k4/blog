@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analyzing SQLite Log Storage Efficiency</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 40px;
+      background-color: #f7f7f7;
+    }
+    article {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: auto;
+    }
+    pre, code {
+      background-color: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: Consolas, Monaco, 'Courier New', Courier, monospace;
+    }
+    ul {
+      margin: 20px 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    .math {
+      font-style: italic;
+      text-align: center;
+      margin: 20px 0;
+    }
+  </style>
+  <!-- MathJax configuration -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <!-- Load MathJax from CDN -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <article>
+    <h1>Analyzing SQLite Log Storage Efficiency</h1>
+    <p>
+      I tried to store logs into an SQLite database because of its simplicity, but I noticed that it might not be a very space efficient way to store logs.
+      After storing <code>677414</code> log entries, I noticed that the database file size was 4.5 GB, which is quite large for only that amount of logs.
+      This would mean that on average one log line would take 6.5–7 KB of space, which is rather high.
+    </p>
+    
+    <p>
+      Because I also collected how many bytes of log data were processed, I was able to calculate how much space on average one log line really is:
+    </p>
+    
+    <p class="math">
+      $$\frac{208,219,422\ \text{bytes}}{677,414\ \text{loglines}} \approx 307\ \text{bytes per logline}$$
+    </p>
+    
+    <p>
+      So according to this, the average size for one log line was only 307 bytes – around 22 times smaller than the estimated 7 KB per log line.
+      This indicates that storing logs into an SQLite database is very space inefficient.
+      I tried compressing the SQLite database with <code>zstd</code> and obtained the following results:
+    </p>
+    
+    <ul>
+      <li><code>zstd database.db</code>: 4.5 GB &rarr; 71 MB (60× reduction)</li>
+      <li><code>zstd --ultra -22 database.db</code> (took a long time): 4.5 GB &rarr; 42 MB (107× reduction)</li>
+    </ul>
+    
+    <p>
+      It seems that compression can achieve quite a good reduction, which means there is a lot of repetition in the log data.
+      However, compressing an SQLite database can be challenging and comes with a risk of corruption.
+    </p>
+    
+    <p>
+      Now, consider if there were 2000 log lines produced per second and each log were around 7 KB:
+    </p>
+    
+    <h2>Calculations</h2>
+    
+    <h3>1. Data per second:</h3>
+    <p>
+      $$2000\ \text{logs/s} \times 7\ \text{KB/log} = 14\,000\ \text{KB/s}$$
+    </p>
+    
+    <h3>2. Data per hour:</h3>
+    <p>
+      There are 3600 seconds in an hour, so:
+    </p>
+    <p>
+      $$14\,000\ \text{KB/s} \times 3600\ \text{s} = 50\,400\,000\ \text{KB/hour}$$
+    </p>
+    
+    <h3>3. Convert to GB:</h3>
+    <p>
+      Using the decimal system (1 GB = 1,000,000 KB):
+    </p>
+    <p>
+      $$\frac{50\,400\,000\ \text{KB}}{1\,000\,000\ \text{KB/GB}} = 50.4\ \text{GB}$$
+    </p>
+    
+    <h2>Summary Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Time Period</th>
+          <th>Data Produced (GB)</th>
+          <th>Equivalent in TB (approx.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 Hour</td>
+          <td>50.4 GB</td>
+          <td>0.05 TB</td>
+        </tr>
+        <tr>
+          <td>1 Day</td>
+          <td>50.4 GB × 24 = 1,209.6 GB</td>
+          <td>≈ 1.21 TB</td>
+        </tr>
+        <tr>
+          <td>1 Month*</td>
+          <td>1,209.6 GB × 30 = 36,288 GB</td>
+          <td>≈ 36.29 TB</td>
+        </tr>
+        <tr>
+          <td>1 Year**</td>
+          <td>1,209.6 GB × 365 = 441,504 GB</td>
+          <td>≈ 441.50 TB</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <p><em>*Assuming a 30-day month</em></p>
+    <p><em>**Assuming a 365-day year</em></p>
+  </article>
+</body>
+</html>
