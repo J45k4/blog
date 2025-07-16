@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Salary Calculation with Interest and Saving Rates</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+    }
+    label {
+      display: inline-block;
+      width: 200px;
+      margin-bottom: 0.5em;
+    }
+    input[type="text"] {
+      width: 150px;
+    }
+    button {
+      margin: 1em 0;
+      padding: 0.5em 1.5em;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 1em;
+      width: 100%;
+      max-width: 650px;
+    }
+    th, td {
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 0.5em;
+    }
+    th {
+      background: #eee;
+    }
+    .numeric {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Required Salary Calculator</h1>
+
+<div>
+  <label for="lumpSum">Lump Sum Needed (L):</label>
+  <input type="text" id="lumpSum" value="2450000" />
+</div>
+
+<div>
+  <label for="workYears">Working Years (T):</label>
+  <input type="text" id="workYears" value="50" />
+</div>
+
+<div>
+  <label for="rates">Interest Rates (comma-separated):</label>
+  <input type="text" id="rates" value="0.02,0.04,0.06,0.08" />
+</div>
+
+<div>
+  <label for="savingRates">Saving % (comma-separated):</label>
+  <input type="text" id="savingRates" value="0.2,0.3,0.37,0.4" />
+</div>
+
+<button onclick="calculate()">Calculate</button>
+
+<table id="resultsTable" style="display:none;">
+  <thead>
+    <tr>
+      <th>Interest Rate (r)</th>
+      <th>Saving % (p)</th>
+      <th>Required Salary (S)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Results will go here -->
+  </tbody>
+</table>
+
+<script>
+function calculate() {
+  // 1. Get user inputs
+  const L = parseFloat(document.getElementById('lumpSum').value);  // Lump sum needed
+  const T = parseInt(document.getElementById('workYears').value);  // Working years
+
+  // Parse comma-separated interest rates
+  let rates = document.getElementById('rates').value.split(',');
+  rates = rates.map(r => parseFloat(r.trim())); // Convert to numeric
+
+  // Parse comma-separated saving percentages
+  let savingRates = document.getElementById('savingRates').value.split(',');
+  savingRates = savingRates.map(p => parseFloat(p.trim())); // Convert to numeric
+
+  // 2. Prepare the table for new data
+  const table = document.getElementById('resultsTable');
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = '';  // clear old results
+
+  // 3. For each combination of (r, p), compute S using:
+  //    S = (L / p) * [ r / ((1 + r)^T - 1) ]
+  for (let i = 0; i < rates.length; i++) {
+    const r = rates[i];
+    for (let j = 0; j < savingRates.length; j++) {
+      const p = savingRates[j];
+
+      // Avoid invalid zero or negative p/r
+      if (p <= 0 || r <= 0) {
+        continue; 
+      }
+
+      const numerator = L * r;
+      const denominator = p * (Math.pow(1 + r, T) - 1);
+      const S = numerator / denominator;
+
+      // 4. Create a row in the table
+      const row = document.createElement('tr');
+
+      // Format r and p as percentages, S as currency
+      const cellRate = document.createElement('td');
+      cellRate.textContent = (r * 100).toFixed(2) + '%';
+      row.appendChild(cellRate);
+
+      const cellSaving = document.createElement('td');
+      cellSaving.textContent = (p * 100).toFixed(2) + '%';
+      row.appendChild(cellSaving);
+
+      const cellSalary = document.createElement('td');
+      // You can tweak the formatting below as desired
+      cellSalary.textContent = '$' + S.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      cellSalary.classList.add('numeric');
+      row.appendChild(cellSalary);
+
+      tbody.appendChild(row);
+    }
+  }
+
+  // 5. Make the table visible
+  table.style.display = 'table';
+}
+</script>
+
+</body>
+</html>
