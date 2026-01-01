@@ -2,90 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Value Shift in Software Development</title>
+  <title>The Value Shift in Software Development</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
+      line-height: 1.7;
       margin: 40px;
       background-color: #f7f7f7;
     }
     article {
       background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 800px;
+      padding: 28px;
+      border-radius: 6px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      max-width: 820px;
       margin: auto;
     }
-    h1, h2, h3 {
-      color: #333;
+    h1, h2 {
+      color: #222;
+    }
+    h2 {
+      margin-top: 1.6em;
+    }
+    p {
+      margin: 1em 0;
     }
     ul, ol {
-      margin: 20px 0;
+      margin: 1em 0 1em 1.5em;
     }
   </style>
 </head>
 <body>
   <article>
-    <h1>Value Shift in Software Development</h1>
+    <h1>The Value Shift in Software Development</h1>
+    <p><em>2026-01-01</em></p>
+
     <p>
-      Around 2025, when the first models that were truly good at agent work showed up,
-      coding agents started to feel genuinely useful.
-      Since then, the steady trend has been: better results every iteration.
-      If that keeps going, then a GPT-5 level model will be almost free in one year,
-      while the best models keep getting noticeably stronger.
+      Around July 2025, with the arrival of GPT-5, coding agents crossed an important threshold.
+      For the first time, they felt genuinely capable of handling agentic coding tasks—especially
+      in web applications and CRUD-style backend systems.
     </p>
 
     <p>
-      A concrete example of the cost drop: about a year ago, o1 Standard API pricing was
-      $15 / 1M input and $60 / 1M output. Today, GPT-5.2 Standard is listed at
-      $1.75 / 1M input and $14 / 1M output. That is roughly 8x cheaper on input and
-      4x cheaper on output. Cached input went from $7.50 / 1M to $0.175 / 1M,
-      which is about 40x cheaper.
+      Since then, the trend has been steady and unmistakable: each new iteration delivers better
+      results. If this trajectory continues, today’s GPT-5-level capability may be close to
+      commoditized within a year, while the frontier models continue to advance meaningfully.
     </p>
 
     <p>
-      If models can handle most routine coding tasks, the value in software development shifts.
-      Writing code becomes a smaller part of the job.
+      The pricing shift makes this concrete. About a year ago, o1 Standard API pricing was
+      <strong>$15 / 1M input</strong> and <strong>$60 / 1M output</strong>.
+      Today, GPT-5.2 Standard is listed at
+      <strong>$1.75 / 1M input</strong> and <strong>$14 / 1M output</strong>.
+      That is roughly an 8× reduction on input and a 4× reduction on output.
+      Cached input dropped from <strong>$7.50 / 1M</strong> to <strong>$0.175 / 1M</strong>—nearly 40× cheaper.
+    </p>
+
+    <p>
+      When models can handle most routine coding tasks, the value in software development shifts.
+      Writing code becomes a smaller portion of the total work.
       Defining the right problem and validating the solution become the center of gravity.
     </p>
 
     <h2>A Possible Workflow</h2>
+
     <p>
-      Imagine a product-focused person who gathers customer needs and writes a clear ticket.
-      Instead of handing it to an engineer first, they hand it to an AI system wired into the ticketing flow.
+      Imagine a product-focused person who gathers customer needs and writes a clear, well-scoped ticket.
+      Instead of handing it directly to an engineer, they hand it to an AI system integrated into the
+      ticketing and repository workflow.
     </p>
 
     <ol>
-      <li>AI makes changes, pushes a feature branch, and opens a merge request.</li>
-      <li>If CI passes, the product person deploys to a dev environment.</li>
-      <li>They test the feature and verify it matches the intent.</li>
-      <li>If something is wrong, they report it to the AI and repeat.</li>
-      <li>Once it works, a software engineer reviews for quality and consistency.</li>
-      <li>The engineer merges it.</li>
+      <li>The AI implements the change, pushes a feature branch, and opens a merge request.</li>
+      <li>If CI passes, the product owner deploys it to a development environment.</li>
+      <li>They test the feature and verify it matches the original intent.</li>
+      <li>If something is off, they report it back to the AI and iterate.</li>
+      <li>Once the behavior is correct, a software engineer reviews for quality and consistency.</li>
+      <li>The engineer approves and merges the change.</li>
     </ol>
 
-    <h2>The Engineer Becomes a Taste Tester</h2>
+    <h2>The Engineer as a Taste Tester</h2>
+
     <p>
-      The engineer role shifts toward taste, quality, and long-term maintainability.
-      It is less about writing every line, and more about making sure the final result is solid.
+      In this model, the engineer’s role shifts toward taste, architectural judgment,
+      and long-term maintainability.
+      The focus is less on authoring every line of code and more on ensuring that the final
+      result is coherent, resilient, and aligned with the system’s standards.
     </p>
 
-    <h2>A New Kind of Product Tester Role</h2>
+    <h2>A New Kind of Product Tester</h2>
+
     <p>
-      The person driving the loop does not need deep programming knowledge.
-      They need to know the product, test the behavior, and communicate with the agent effectively.
+      The person driving this loop does not need deep programming expertise.
+      What they need is a strong understanding of the product, the ability to test behavior
+      critically, and the skill to communicate intent and feedback clearly to the agent.
     </p>
+
     <ul>
-      <li>Comfortable using a computer and a terminal</li>
+      <li>Comfortable using a computer, tools, and basic terminal workflows</li>
       <li>Deep understanding of the product and its users</li>
-      <li>Good at describing issues and iterating with the AI</li>
+      <li>Skilled at describing issues and iterating precisely with the AI</li>
     </ul>
 
     <p>
-      In that world, the value is less about typing code and more about defining the right thing,
-      testing it, and knowing when it is good enough to ship.
+      In this world, value shifts away from typing code and toward defining the right thing,
+      validating behavior, and knowing when the result is good enough to ship.
     </p>
   </article>
 </body>
